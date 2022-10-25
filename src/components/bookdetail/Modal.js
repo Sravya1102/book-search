@@ -13,46 +13,47 @@ const BookDetail = (props) => {
     const [book, setBook] = useState({})
     const [loading, setLoading] = useState({})
 
-    const fetchBookDetail = async () => {
-        setLoading(true);
-        try {
-            const response = await fetch(`${URL}${currentBook.id}.json`);
-            const data = await response.json();
-
-            if (data) {
-                const {
-                    description,
-                    title,
-                    covers,
-                    subject_places,
-                    subject_times,
-                    subjects
-                } = data;
-                const newBook = {
-                    description: description ? description.value : messages.notFound,
-                    title: title,
-                    cover_img: covers
-                        ? `https://covers.openlibrary.org/b/id/${covers[0]}-L.jpg`
-                        : coverImg,
-                    subject_places: subject_places
-                        ? subject_places.join(", ")
-                        : messages.notFound,
-                    subject_times: subject_times
-                        ? subject_times.join(", ")
-                        : messages.notFound,
-                    subjects: subjects ? subjects.join(", ") : messages.notFound
-                };
-                setBook(newBook);
-            } else {
-                setBook(null);
-            }
-            setLoading(false);
-        } catch (error) {
-            setLoading(false);
-        }
-    }
 
     useEffect(() => {
+        const fetchBookDetail = async () => {
+            setLoading(true);
+            try {
+                const response = await fetch(`${URL}${currentBook.id}.json`);
+                const data = await response.json();
+
+                if (data) {
+                    const {
+                        description,
+                        title,
+                        covers,
+                        subject_places,
+                        subject_times,
+                        subjects
+                    } = data;
+                    const newBook = {
+                        description: description ? description.value : messages.notFound,
+                        title: title,
+                        cover_img: covers
+                            ? `https://covers.openlibrary.org/b/id/${covers[0]}-L.jpg`
+                            : coverImg,
+                        subject_places: subject_places
+                            ? subject_places.join(", ")
+                            : messages.notFound,
+                        subject_times: subject_times
+                            ? subject_times.join(", ")
+                            : messages.notFound,
+                        subjects: subjects ? subjects.join(", ") : messages.notFound
+                    };
+                    setBook(newBook);
+                } else {
+                    setBook(null);
+                }
+                setLoading(false);
+            } catch (error) {
+                setLoading(false);
+            }
+        }
+
         if (currentBook && currentBook.id) {
             fetchBookDetail(currentBook.id)
         }
@@ -66,13 +67,13 @@ const BookDetail = (props) => {
                     <span className="close" onClick={() => { setOpen(false) }}>&times;</span>
                     <h2>Book Detail</h2>
                 </div>
-                <div className="modal-body" style={{display: "flex"}}>
+                <div className="modal-body" style={{ display: "flex" }}>
                     <div>
                         <div style={{ width: "30%", marginRight: "20px" }}>
-                            <img src={book?.cover_img} alt="cover img" />
+                            <img src={book?.cover_img} alt="cover img" style={{ height: "400px" }} />
                         </div>
                     </div>
-                    <div style={{ width: "70%" }}>
+                    <div style={{ width: "70%", maxHeight: "400px", overflow: "auto" }}>
                         <div>
                             <div className="desc-section">
                                 <span className="book-title">{book?.title}</span>
@@ -95,6 +96,8 @@ const BookDetail = (props) => {
                             </div>
                         </div>
                     </div>
+                </div>
+                <div class="modal-footer">
                 </div>
             </div>
         </div>

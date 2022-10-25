@@ -82,11 +82,3 @@
 .desc-section{
     margin-bottom: 20px
 }
-
-.modal{
-    overflow-y: initial !important
-}
-.modal-body{
-    height: 100vh;
-    overflow-y: auto;
-}
